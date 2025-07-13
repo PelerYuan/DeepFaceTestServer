@@ -44,7 +44,6 @@ def analyze_image():
         return jsonify({'error': str(e)}), 500
     finally:
         os.remove(filepath)
-        return None
 
 
 if __name__ == '__main__':
