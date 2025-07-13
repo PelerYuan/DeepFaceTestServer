@@ -31,12 +31,12 @@ def analyze_image():
     image.save(filepath)
 
     try:
-        # DeepFace 情绪分析
+        # 使用 DeepFace 自带的检测器并提升准确率
         raw_result = DeepFace.analyze(
             img_path=filepath,
             actions=['emotion'],
-            enforce_detection=False,
-            detector_backend='opencv'  # 使用轻量后端加速处理
+            enforce_detection=True,  # 确保仅在检测到人脸时进行分析
+            detector_backend='deepface'  # 使用 DeepFace 自带的检测模型
         )
         result = convert_ndarray(raw_result)
         return jsonify(result)
@@ -44,6 +44,8 @@ def analyze_image():
         return jsonify({'error': str(e)}), 500
     finally:
         os.remove(filepath)
+        return None
+
 
 if __name__ == '__main__':
     # 对外开放端口，支持 WSL / 局域网访问
